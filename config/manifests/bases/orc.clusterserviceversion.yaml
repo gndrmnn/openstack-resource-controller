@@ -19,6 +19,11 @@ spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
     owned:
+    - description: Region is the Schema for an ORC resource.
+      displayName: Region
+      kind: Region
+      name: regions.openstack.k-orc.cloud
+      version: ""
     - description: AddressScope is the Schema for an ORC resource.
       displayName: Address Scope
       kind: AddressScope
@@ -83,6 +88,11 @@ spec:
       displayName: Region
       kind: Region
       name: regions.openstack.k-orc.cloud
+      version: v1alpha1
+    - description: RegisteredLimit is the Schema for an ORC resource.
+      displayName: Registered Limit
+      kind: RegisteredLimit
+      name: registeredlimits.openstack.k-orc.cloud
       version: v1alpha1
     - description: RoleAssignment is the Schema for an ORC resource.
       displayName: Role Assignment
