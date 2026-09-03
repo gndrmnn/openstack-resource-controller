@@ -48,6 +48,10 @@ type Interface interface {
 	Ports() PortInformer
 	// Projects returns a ProjectInformer.
 	Projects() ProjectInformer
+	// Regions returns a RegionInformer.
+	Regions() RegionInformer
+	// RegisteredLimits returns a RegisteredLimitInformer.
+	RegisteredLimits() RegisteredLimitInformer
 	// Roles returns a RoleInformer.
 	Roles() RoleInformer
 	// RoleAssignments returns a RoleAssignmentInformer.
@@ -147,6 +151,16 @@ func (v *version) Ports() PortInformer {
 // Projects returns a ProjectInformer.
 func (v *version) Projects() ProjectInformer {
 	return &projectInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+}
+
+// Regions returns a RegionInformer.
+func (v *version) Regions() RegionInformer {
+	return &regionInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+}
+
+// RegisteredLimits returns a RegisteredLimitInformer.
+func (v *version) RegisteredLimits() RegisteredLimitInformer {
+	return &registeredLimitInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }
 
 // Roles returns a RoleInformer.
