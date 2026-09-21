@@ -60,6 +60,46 @@ func (networkStatusWriter) ResourceAvailableStatus(orcObject *orcv1alpha1.Networ
 	return metav1.ConditionFalse, nil
 }
 
+func SegmentStatusEquality(a orcapplyconfigv1alpha1.ProviderPropertiesStatusApplyConfiguration, b orcapplyconfigv1alpha1.ProviderPropertiesStatusApplyConfiguration) bool {
+	if a.NetworkType == nil && b.NetworkType != nil {
+		return false
+	}
+
+	if a.NetworkType != nil && b.NetworkType == nil {
+		return false
+	}
+
+	if a.NetworkType != nil && *a.NetworkType != *b.NetworkType {
+		return false
+	}
+
+	if a.PhysicalNetwork == nil && b.PhysicalNetwork != nil {
+		return false
+	}
+
+	if a.PhysicalNetwork != nil && b.PhysicalNetwork == nil {
+		return false
+	}
+
+	if a.PhysicalNetwork != nil && *a.PhysicalNetwork != *b.PhysicalNetwork {
+		return false
+	}
+
+	if a.SegmentationID == nil && b.SegmentationID != nil {
+		return false
+	}
+
+	if a.SegmentationID != nil && b.SegmentationID == nil {
+		return false
+	}
+
+	if a.SegmentationID != nil && *a.SegmentationID != *b.SegmentationID {
+		return false
+	}
+
+	return true
+}
+
 func (networkStatusWriter) ApplyResourceStatus(log logr.Logger, osResource *osclients.NetworkExt, statusApply *orcapplyconfigv1alpha1.NetworkStatusApplyConfiguration) {
 	networkResourceStatus := orcapplyconfigv1alpha1.NetworkResourceStatus().
 		WithName(osResource.Name).
@@ -83,20 +123,46 @@ func (networkStatusWriter) ApplyResourceStatus(log logr.Logger, osResource *oscl
 	if osResource.DNSDomain != "" {
 		networkResourceStatus.WithDNSDomain(osResource.DNSDomain)
 	}
+
+	var inlineSegmentStatus *orcapplyconfigv1alpha1.ProviderPropertiesStatusApplyConfiguration
+
 	if osResource.NetworkType != "" {
-		providerProperties := orcapplyconfigv1alpha1.ProviderPropertiesStatus().
-			WithNetworkType(osResource.NetworkType).
-			WithPhysicalNetwork(osResource.PhysicalNetwork)
+		inlineSegmentStatus := orcapplyconfigv1alpha1.ProviderPropertiesStatus().
+			WithNetworkType(osResource.NetworkType)
+
+		if osResource.PhysicalNetwork != "" {
+			inlineSegmentStatus.WithPhysicalNetwork(osResource.PhysicalNetwork)
+		}
 
 		if osResource.SegmentationID != "" {
 			segmentationID, err := strconv.ParseInt(osResource.SegmentationID, 10, 32)
 			if err != nil {
 				log.V(logging.Info).Error(err, "Invalid segmentation ID", "segmentationID", osResource.SegmentationID)
 			} else {
-				providerProperties.WithSegmentationID(int32(segmentationID))
+				inlineSegmentStatus.WithSegmentationID(int32(segmentationID))
 			}
 		}
-		networkResourceStatus.WithProvider(providerProperties)
+
+		networkResourceStatus.WithSegments(inlineSegmentStatus)
+	}
+
+	for i := range osResource.Segments {
+		segment := osResource.Segments[i]
+
+		segmentStatus := orcapplyconfigv1alpha1.ProviderPropertiesStatus().
+			WithNetworkType(segment.NetworkType)
+
+		if segment.PhysicalNetwork != "" {
+			segmentStatus.WithPhysicalNetwork(segment.PhysicalNetwork)
+		}
+
+		if segment.SegmentationID != 0 {
+			segmentStatus.WithSegmentationID(int32(segment.SegmentationID))
+		}
+
+		if !SegmentStatusEquality(*segmentStatus, *inlineSegmentStatus) {
+			networkResourceStatus.WithSegments(segmentStatus)
+		}
 	}
 
 	statusApply.WithResource(networkResourceStatus)
