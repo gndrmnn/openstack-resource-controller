@@ -297,8 +297,9 @@ spec:
                         networkType:
                           description: |-
                             networkType is the type of physical network that this
-                            network should be mapped to. Supported values are flat, vlan, vxlan, and gre.
+                            network should be mapped to. Supported values are local, flat, vlan, vxlan, and gre.
                           enum:
+                          - local
                           - flat
                           - vlan
                           - vxlan

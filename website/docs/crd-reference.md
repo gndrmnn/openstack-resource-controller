@@ -3278,13 +3278,14 @@ _Underlying type:_ _string_
 
 
 _Validation:_
-- Enum: [flat vlan vxlan gre]
+- Enum: [local flat vlan vxlan gre]
 
 _Appears in:_
 - [ProviderSegmentSpec](#providersegmentspec)
 
 | Field | Description |
 | --- | --- |
+| `local` |  |
 | `flat` |  |
 | `vlan` |  |
 | `vxlan` |  |
@@ -3322,7 +3323,7 @@ _Appears in:_
 
 | Field | Description | Default | Validation |
 | --- | --- | --- | --- |
-| `networkType` _[ProviderNetworkType](#providernetworktype)_ | networkType is the type of physical network that this<br />network should be mapped to. Supported values are flat, vlan, vxlan, and gre. |  | Enum: [flat vlan vxlan gre] <br />Required: \{\} <br /> |
+| `networkType` _[ProviderNetworkType](#providernetworktype)_ | networkType is the type of physical network that this<br />network should be mapped to. Supported values are local, flat, vlan, vxlan, and gre. |  | Enum: [local flat vlan vxlan gre] <br />Required: \{\} <br /> |
 | `physicalNetwork` _string_ | physicalNetwork is the physical network where this network<br />should be implemented. The Networking API v2.0 does not provide a<br />way to list available physical networks. For example, the Open<br />vSwitch plug-in configuration file defines a symbolic name that maps<br />to specific bridges on each compute host. |  | MaxLength: 64 <br />MinLength: 1 <br />Optional: \{\} <br /> |
 | `segmentationID` _integer_ | segmentationID is the ID of the isolated segment on the<br />physical network. The network_type attribute defines the<br />segmentation model. For example, if the network_type value is vlan,<br />this ID is a vlan identifier. If the network_type value is gre, this<br />ID is a gre key. |  | Minimum: 0 <br />Optional: \{\} <br /> |
 

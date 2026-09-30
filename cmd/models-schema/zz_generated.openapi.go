@@ -7912,7 +7912,7 @@ func schema_openstack_resource_controller_v3_api_v1alpha1_ProviderSegmentSpec(re
 				Properties: map[string]spec.Schema{
 					"networkType": {
 						SchemaProps: spec.SchemaProps{
-							Description: "networkType is the type of physical network that this network should be mapped to. Supported values are flat, vlan, vxlan, and gre.",
+							Description: "networkType is the type of physical network that this network should be mapped to. Supported values are local, flat, vlan, vxlan, and gre.",
 							Type:        []string{"string"},
 							Format:      "",
 						},

@@ -27,10 +27,11 @@ type DNSDomain string
 // +kubebuilder:validation:Maximum:=9216
 type MTU int32
 
-// +kubebuilder:validation:Enum:=flat;vlan;vxlan;gre
+// +kubebuilder:validation:Enum:=local;flat;vlan;vxlan;gre
 type ProviderNetworkType string
 
 const (
+	ProviderNetworkTypeLocal ProviderNetworkType = "local"
 	ProviderNetworkTypeFlat  ProviderNetworkType = "flat"
 	ProviderNetworkTypeVlan  ProviderNetworkType = "vlan"
 	ProviderNetworkTypeVxlan ProviderNetworkType = "vxlan"
@@ -39,7 +40,7 @@ const (
 
 type ProviderSegmentSpec struct {
 	// networkType is the type of physical network that this
-	// network should be mapped to. Supported values are flat, vlan, vxlan, and gre.
+	// network should be mapped to. Supported values are local, flat, vlan, vxlan, and gre.
 	// +required
 	NetworkType ProviderNetworkType `json:"networkType,omitempty"`
 

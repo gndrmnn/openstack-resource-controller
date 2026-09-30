@@ -175,6 +175,7 @@ var _ = Describe("ORC Network API validations", func() {
 			patch.Spec.WithResource(testNetworkResource().WithSegments(specPatch))
 			Expect(applyObj(ctx, obj, patch)).To(Succeed(), "create network")
 		},
+		Entry(string(orcv1alpha1.ProviderNetworkTypeLocal), orcv1alpha1.ProviderNetworkTypeLocal),
 		Entry(string(orcv1alpha1.ProviderNetworkTypeFlat), orcv1alpha1.ProviderNetworkTypeFlat),
 		Entry(string(orcv1alpha1.ProviderNetworkTypeGre), orcv1alpha1.ProviderNetworkTypeGre),
 		Entry(string(orcv1alpha1.ProviderNetworkTypeVlan), orcv1alpha1.ProviderNetworkTypeVlan),
