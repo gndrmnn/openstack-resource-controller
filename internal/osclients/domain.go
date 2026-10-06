@@ -1,5 +1,5 @@
 /*
-Copyright 2025 The ORC Authors.
+Copyright The ORC Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ func NewDomainClient(providerClient *gophercloud.ProviderClient, providerClientO
 	})
 
 	if err != nil {
-		return nil, fmt.Errorf("failed to create domain service client: %v", err)
+		return nil, fmt.Errorf("failed to create domain service client: %w", err)
 	}
 
 	return &domainClient{client}, nil

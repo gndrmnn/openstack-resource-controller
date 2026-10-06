@@ -1,5 +1,5 @@
 /*
-Copyright 2025 The ORC Authors.
+Copyright The ORC Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ func NewKeyPairClient(providerClient *gophercloud.ProviderClient, providerClient
 	})
 
 	if err != nil {
-		return nil, fmt.Errorf("failed to create keypair service client: %v", err)
+		return nil, fmt.Errorf("failed to create keypair service client: %w", err)
 	}
 	client.Microversion = NovaMinimumMicroversion
 

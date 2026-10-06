@@ -343,6 +343,10 @@ log.V(logging.Verbose).Info("...")  // Admin: fires every reconcile
 log.V(logging.Debug).Info("...")    // Development: detailed debugging
 ```
 
+## Copyright Headers
+
+Use `Copyright The ORC Authors.` with no year, matching `hack/boilerplate.go.txt`.
+
 ## Key Make Targets
 
 ```bash
@@ -401,6 +405,33 @@ func (actuator myActuator) GetResourceReconcilers(ctx context.Context, orcObject
 - **With dependencies**: `internal/controllers/securitygroup/` - Project dependency, rules reconciliation
 - **Multiple reconcilers**: `internal/controllers/trunk/` - `updateResource` + `reconcileSubports` + tags
 - **Complex**: `internal/controllers/server/` - Multiple dependencies, many reconcilers
+
+## Contributing New Controllers
+
+See `website/docs/development/contributing.md` for the full guidelines. Key
+rules for agents:
+
+Always structure new controller branches as three separate commits:
+
+1. **Scaffolding**: Raw output of `go run ./cmd/scaffold-controller`. No manual
+   edits. The commit message **must** contain the exact command with all flags:
+   ```
+   Scaffolding for the VolumeBackup controller
+
+   $ go run ./cmd/scaffold-controller -interactive=false \
+       -kind=VolumeBackup \
+       -gophercloud-client=NewBlockStorageV3 \
+       -gophercloud-module=github.com/gophercloud/gophercloud/v2/openstack/blockstorage/v3/backups
+   ```
+2. **Generated code**: Registration in `cmd/resource-generator/main.go`,
+   `make generate`, scope wiring, manager registration, `make generate-bundle`.
+   No hand-written logic.
+3. **Implementation** (one or more commits): API types, actuator, status
+   writer, tests (the `TODO(scaffolding)` work).
+
+For complex controllers, consider splitting work across multiple PRs (e.g.
+basic immutable create/delete/import first, mutability in follow-ups). The
+initial implementation may treat all spec fields as immutable.
 
 ## Documentation
 
