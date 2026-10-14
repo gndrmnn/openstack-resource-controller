@@ -34,6 +34,14 @@ type ApplicationCredentialListerExpansion interface{}
 // ApplicationCredentialNamespaceLister.
 type ApplicationCredentialNamespaceListerExpansion interface{}
 
+// DNSZoneListerExpansion allows custom methods to be added to
+// DNSZoneLister.
+type DNSZoneListerExpansion interface{}
+
+// DNSZoneNamespaceListerExpansion allows custom methods to be added to
+// DNSZoneNamespaceLister.
+type DNSZoneNamespaceListerExpansion interface{}
+
 // DomainListerExpansion allows custom methods to be added to
 // DomainLister.
 type DomainListerExpansion interface{}
@@ -217,6 +225,14 @@ type SubnetListerExpansion interface{}
 // SubnetNamespaceListerExpansion allows custom methods to be added to
 // SubnetNamespaceLister.
 type SubnetNamespaceListerExpansion interface{}
+
+// SubnetPoolListerExpansion allows custom methods to be added to
+// SubnetPoolLister.
+type SubnetPoolListerExpansion interface{}
+
+// SubnetPoolNamespaceListerExpansion allows custom methods to be added to
+// SubnetPoolNamespaceLister.
+type SubnetPoolNamespaceListerExpansion interface{}
 
 // TrunkListerExpansion allows custom methods to be added to
 // TrunkLister.

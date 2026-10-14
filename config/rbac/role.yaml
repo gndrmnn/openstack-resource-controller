@@ -19,6 +19,7 @@ rules:
   resources:
   - addressscopes
   - applicationcredentials
+  - dnszones
   - domains
   - endpoints
   - flavors
@@ -41,6 +42,7 @@ rules:
   - servers
   - services
   - sharenetworks
+  - subnetpools
   - subnets
   - trunks
   - users
@@ -59,6 +61,7 @@ rules:
   resources:
   - addressscopes/status
   - applicationcredentials/status
+  - dnszones/status
   - domains/status
   - endpoints/status
   - flavors/status
@@ -81,6 +84,7 @@ rules:
   - servers/status
   - services/status
   - sharenetworks/status
+  - subnetpools/status
   - subnets/status
   - trunks/status
   - users/status

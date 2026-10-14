@@ -30,6 +30,7 @@ type OpenstackV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	AddressScopesGetter
 	ApplicationCredentialsGetter
+	DNSZonesGetter
 	DomainsGetter
 	EndpointsGetter
 	FlavorsGetter
@@ -53,6 +54,7 @@ type OpenstackV1alpha1Interface interface {
 	ServicesGetter
 	ShareNetworksGetter
 	SubnetsGetter
+	SubnetPoolsGetter
 	TrunksGetter
 	UsersGetter
 	VolumesGetter
@@ -70,6 +72,10 @@ func (c *OpenstackV1alpha1Client) AddressScopes(namespace string) AddressScopeIn
 
 func (c *OpenstackV1alpha1Client) ApplicationCredentials(namespace string) ApplicationCredentialInterface {
 	return newApplicationCredentials(c, namespace)
+}
+
+func (c *OpenstackV1alpha1Client) DNSZones(namespace string) DNSZoneInterface {
+	return newDNSZones(c, namespace)
 }
 
 func (c *OpenstackV1alpha1Client) Domains(namespace string) DomainInterface {
@@ -162,6 +168,10 @@ func (c *OpenstackV1alpha1Client) ShareNetworks(namespace string) ShareNetworkIn
 
 func (c *OpenstackV1alpha1Client) Subnets(namespace string) SubnetInterface {
 	return newSubnets(c, namespace)
+}
+
+func (c *OpenstackV1alpha1Client) SubnetPools(namespace string) SubnetPoolInterface {
+	return newSubnetPools(c, namespace)
 }
 
 func (c *OpenstackV1alpha1Client) Trunks(namespace string) TrunkInterface {

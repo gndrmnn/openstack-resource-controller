@@ -38,6 +38,7 @@ type MockScopeFactory struct {
 	ApplicationCredentialClient *mock.MockApplicationCredentialClient
 	ComputeClient               *mock.MockComputeClient
 	DomainClient                *mock.MockDomainClient
+	DNSZoneClient               *mock.MockDNSZoneClient
 	EndpointClient              *mock.MockEndpointClient
 	GroupClient                 *mock.MockGroupClient
 	IdentityClient              *mock.MockIdentityClient
@@ -53,6 +54,7 @@ type MockScopeFactory struct {
 	VolumeClient                *mock.MockVolumeClient
 	VolumeTypeClient            *mock.MockVolumeTypeClient
 	ShareNetworkClient          *mock.MockShareNetworkClient
+	SubnetPoolClient            *mock.MockSubnetPoolClient
 	LimitClient                 *mock.MockLimitClient
 
 	clientScopeCreateError error
@@ -65,6 +67,7 @@ func NewMockScopeFactory(mockCtrl *gomock.Controller) *MockScopeFactory {
 	domainClient := mock.NewMockDomainClient(mockCtrl)
 	endpointClient := mock.NewMockEndpointClient(mockCtrl)
 	groupClient := mock.NewMockGroupClient(mockCtrl)
+	dnsZoneClient := mock.NewMockDNSZoneClient(mockCtrl)
 	identityClient := mock.NewMockIdentityClient(mockCtrl)
 	imageClient := mock.NewMockImageClient(mockCtrl)
 	keypairClient := mock.NewMockKeyPairClient(mockCtrl)
@@ -76,6 +79,7 @@ func NewMockScopeFactory(mockCtrl *gomock.Controller) *MockScopeFactory {
 	serviceClient := mock.NewMockServiceClient(mockCtrl)
 	userClient := mock.NewMockUserClient(mockCtrl)
 	sharenetworkClient := mock.NewMockShareNetworkClient(mockCtrl)
+	subnetpoolClient := mock.NewMockSubnetPoolClient(mockCtrl)
 	volumeClient := mock.NewMockVolumeClient(mockCtrl)
 	volumetypeClient := mock.NewMockVolumeTypeClient(mockCtrl)
 	limitClient := mock.NewMockLimitClient(mockCtrl)
@@ -87,6 +91,7 @@ func NewMockScopeFactory(mockCtrl *gomock.Controller) *MockScopeFactory {
 		DomainClient:                domainClient,
 		EndpointClient:              endpointClient,
 		GroupClient:                 groupClient,
+		DNSZoneClient:               dnsZoneClient,
 		IdentityClient:              identityClient,
 		ImageClient:                 imageClient,
 		KeyPairClient:               keypairClient,
@@ -97,6 +102,7 @@ func NewMockScopeFactory(mockCtrl *gomock.Controller) *MockScopeFactory {
 		RoleAssignmentClient:        roleassignmentClient,
 		ServiceClient:               serviceClient,
 		ShareNetworkClient:          sharenetworkClient,
+		SubnetPoolClient:            subnetpoolClient,
 		UserClient:                  userClient,
 		VolumeClient:                volumeClient,
 		VolumeTypeClient:            volumetypeClient,
@@ -159,8 +165,16 @@ func (f *MockScopeFactory) NewShareNetworkClient() (osclients.ShareNetworkClient
 	return f.ShareNetworkClient, nil
 }
 
+func (f *MockScopeFactory) NewSubnetPoolClient() (osclients.SubnetPoolClient, error) {
+	return f.SubnetPoolClient, nil
+}
+
 func (f *MockScopeFactory) NewKeyPairClient() (osclients.KeyPairClient, error) {
 	return f.KeyPairClient, nil
+}
+
+func (f *MockScopeFactory) NewDNSZoneClient() (osclients.DNSZoneClient, error) {
+	return f.DNSZoneClient, nil
 }
 
 func (f *MockScopeFactory) NewGroupClient() (osclients.GroupClient, error) {

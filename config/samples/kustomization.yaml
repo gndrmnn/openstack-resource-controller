@@ -3,6 +3,7 @@
 resources:
 - openstack_v1alpha1_addressscope.yaml
 - openstack_v1alpha1_applicationcredential.yaml
+- openstack_v1alpha1_dnszone.yaml
 - openstack_v1alpha1_domain.yaml
 - openstack_v1alpha1_endpoint.yaml
 - openstack_v1alpha1_flavor.yaml
@@ -26,6 +27,7 @@ resources:
 - openstack_v1alpha1_service.yaml
 - openstack_v1alpha1_sharenetwork.yaml
 - openstack_v1alpha1_subnet.yaml
+- openstack_v1alpha1_subnetpool.yaml
 - openstack_v1alpha1_trunk.yaml
 - openstack_v1alpha1_user.yaml
 - openstack_v1alpha1_volume.yaml

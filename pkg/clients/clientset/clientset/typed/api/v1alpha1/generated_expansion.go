@@ -22,6 +22,8 @@ type AddressScopeExpansion interface{}
 
 type ApplicationCredentialExpansion interface{}
 
+type DNSZoneExpansion interface{}
+
 type DomainExpansion interface{}
 
 type EndpointExpansion interface{}
@@ -67,6 +69,8 @@ type ServiceExpansion interface{}
 type ShareNetworkExpansion interface{}
 
 type SubnetExpansion interface{}
+
+type SubnetPoolExpansion interface{}
 
 type TrunkExpansion interface{}
 

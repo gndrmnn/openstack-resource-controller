@@ -57,6 +57,8 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Openstack().V1alpha1().AddressScopes().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("applicationcredentials"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Openstack().V1alpha1().ApplicationCredentials().Informer()}, nil
+	case v1alpha1.SchemeGroupVersion.WithResource("dnszones"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Openstack().V1alpha1().DNSZones().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("domains"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Openstack().V1alpha1().Domains().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("endpoints"):
@@ -103,6 +105,8 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Openstack().V1alpha1().ShareNetworks().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("subnets"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Openstack().V1alpha1().Subnets().Informer()}, nil
+	case v1alpha1.SchemeGroupVersion.WithResource("subnetpools"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Openstack().V1alpha1().SubnetPools().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("trunks"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Openstack().V1alpha1().Trunks().Informer()}, nil
 	case v1alpha1.SchemeGroupVersion.WithResource("users"):

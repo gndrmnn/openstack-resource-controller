@@ -29,6 +29,7 @@ import (
 
 	"github.com/k-orc/openstack-resource-controller/v3/internal/controllers/addressscope"
 	"github.com/k-orc/openstack-resource-controller/v3/internal/controllers/applicationcredential"
+	dnszonecontroller "github.com/k-orc/openstack-resource-controller/v3/internal/controllers/dnszone"
 	"github.com/k-orc/openstack-resource-controller/v3/internal/controllers/domain"
 	"github.com/k-orc/openstack-resource-controller/v3/internal/controllers/endpoint"
 	"github.com/k-orc/openstack-resource-controller/v3/internal/controllers/flavor"
@@ -53,6 +54,7 @@ import (
 	"github.com/k-orc/openstack-resource-controller/v3/internal/controllers/service"
 	"github.com/k-orc/openstack-resource-controller/v3/internal/controllers/sharenetwork"
 	"github.com/k-orc/openstack-resource-controller/v3/internal/controllers/subnet"
+	"github.com/k-orc/openstack-resource-controller/v3/internal/controllers/subnetpool"
 	"github.com/k-orc/openstack-resource-controller/v3/internal/controllers/trunk"
 	"github.com/k-orc/openstack-resource-controller/v3/internal/controllers/user"
 	"github.com/k-orc/openstack-resource-controller/v3/internal/controllers/volume"
@@ -126,6 +128,8 @@ func main() {
 		image.New(scopeFactory),
 		network.New(scopeFactory),
 		subnet.New(scopeFactory),
+		subnetpool.New(scopeFactory),
+		dnszonecontroller.New(scopeFactory),
 		router.New(scopeFactory),
 		routerinterface.New(scopeFactory),
 		port.New(scopeFactory),
