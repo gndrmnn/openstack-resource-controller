@@ -38,6 +38,13 @@ type VolumeTypeResourceSpec struct {
 	// isPublic indicates whether the volume type is public.
 	// +optional
 	IsPublic *bool `json:"isPublic,omitempty"`
+
+	// projectRefs contains ORC Projects which have access to this volume type.
+	// +kubebuilder:validation:MaxItems:=4096
+	// +listType=set
+	// +optional
+	// +orc:kustomize:ref=Project
+	ProjectRefs []KubernetesNameRef `json:"projectRefs,omitempty"`
 }
 
 // VolumeTypeFilter defines an existing resource by its properties
@@ -79,6 +86,13 @@ type VolumeTypeResourceStatus struct {
 	// isPublic indicates whether the VolumeType is public.
 	// +optional
 	IsPublic *bool `json:"isPublic"`
+
+	// projectIDs lists the IDs of the Projects which have access to this volume type.
+	// +kubebuilder:validation:MaxItems=4096
+	// +kubebuilder:validation:items:MaxLength=4096
+	// +optional
+	// +listType=set
+	ProjectIDs []string `json:"projectIDs,omitempty"`
 }
 
 type VolumeTypeExtraSpec struct {
