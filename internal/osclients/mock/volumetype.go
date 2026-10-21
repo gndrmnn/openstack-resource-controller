@@ -30,6 +30,8 @@ import (
 	reflect "reflect"
 
 	volumetypes "github.com/gophercloud/gophercloud/v2/openstack/blockstorage/v3/volumetypes"
+	projects "github.com/gophercloud/gophercloud/v2/openstack/identity/v3/projects"
+	osclients "github.com/k-orc/openstack-resource-controller/v3/internal/osclients"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -57,11 +59,25 @@ func (m *MockVolumeTypeClient) EXPECT() *MockVolumeTypeClientMockRecorder {
 	return m.recorder
 }
 
+// AddProject mocks base method.
+func (m *MockVolumeTypeClient) AddProject(ctx context.Context, volumetypeID string, opts volumetypes.AddAccessOpts) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddProject", ctx, volumetypeID, opts)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AddProject indicates an expected call of AddProject.
+func (mr *MockVolumeTypeClientMockRecorder) AddProject(ctx, volumetypeID, opts any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddProject", reflect.TypeOf((*MockVolumeTypeClient)(nil).AddProject), ctx, volumetypeID, opts)
+}
+
 // CreateVolumeType mocks base method.
-func (m *MockVolumeTypeClient) CreateVolumeType(ctx context.Context, opts volumetypes.CreateOptsBuilder) (*volumetypes.VolumeType, error) {
+func (m *MockVolumeTypeClient) CreateVolumeType(ctx context.Context, opts volumetypes.CreateOptsBuilder) (*osclients.VolumeTypeExt, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateVolumeType", ctx, opts)
-	ret0, _ := ret[0].(*volumetypes.VolumeType)
+	ret0, _ := ret[0].(*osclients.VolumeTypeExt)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -87,10 +103,10 @@ func (mr *MockVolumeTypeClientMockRecorder) DeleteVolumeType(ctx, resourceID any
 }
 
 // GetVolumeType mocks base method.
-func (m *MockVolumeTypeClient) GetVolumeType(ctx context.Context, resourceID string) (*volumetypes.VolumeType, error) {
+func (m *MockVolumeTypeClient) GetVolumeType(ctx context.Context, resourceID string) (*osclients.VolumeTypeExt, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetVolumeType", ctx, resourceID)
-	ret0, _ := ret[0].(*volumetypes.VolumeType)
+	ret0, _ := ret[0].(*osclients.VolumeTypeExt)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -101,11 +117,26 @@ func (mr *MockVolumeTypeClientMockRecorder) GetVolumeType(ctx, resourceID any) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVolumeType", reflect.TypeOf((*MockVolumeTypeClient)(nil).GetVolumeType), ctx, resourceID)
 }
 
+// ListProjects mocks base method.
+func (m *MockVolumeTypeClient) ListProjects(ctx context.Context, volumetypeID string) ([]projects.Project, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListProjects", ctx, volumetypeID)
+	ret0, _ := ret[0].([]projects.Project)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListProjects indicates an expected call of ListProjects.
+func (mr *MockVolumeTypeClientMockRecorder) ListProjects(ctx, volumetypeID any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListProjects", reflect.TypeOf((*MockVolumeTypeClient)(nil).ListProjects), ctx, volumetypeID)
+}
+
 // ListVolumeTypes mocks base method.
-func (m *MockVolumeTypeClient) ListVolumeTypes(ctx context.Context, listOpts volumetypes.ListOptsBuilder) iter.Seq2[*volumetypes.VolumeType, error] {
+func (m *MockVolumeTypeClient) ListVolumeTypes(ctx context.Context, listOpts volumetypes.ListOptsBuilder) iter.Seq2[*osclients.VolumeTypeExt, error] {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListVolumeTypes", ctx, listOpts)
-	ret0, _ := ret[0].(iter.Seq2[*volumetypes.VolumeType, error])
+	ret0, _ := ret[0].(iter.Seq2[*osclients.VolumeTypeExt, error])
 	return ret0
 }
 
@@ -115,11 +146,25 @@ func (mr *MockVolumeTypeClientMockRecorder) ListVolumeTypes(ctx, listOpts any) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListVolumeTypes", reflect.TypeOf((*MockVolumeTypeClient)(nil).ListVolumeTypes), ctx, listOpts)
 }
 
+// RemoveProject mocks base method.
+func (m *MockVolumeTypeClient) RemoveProject(ctx context.Context, volumetypeID string, opts volumetypes.RemoveAccessOpts) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RemoveProject", ctx, volumetypeID, opts)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RemoveProject indicates an expected call of RemoveProject.
+func (mr *MockVolumeTypeClientMockRecorder) RemoveProject(ctx, volumetypeID, opts any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RemoveProject", reflect.TypeOf((*MockVolumeTypeClient)(nil).RemoveProject), ctx, volumetypeID, opts)
+}
+
 // UpdateVolumeType mocks base method.
-func (m *MockVolumeTypeClient) UpdateVolumeType(ctx context.Context, id string, opts volumetypes.UpdateOptsBuilder) (*volumetypes.VolumeType, error) {
+func (m *MockVolumeTypeClient) UpdateVolumeType(ctx context.Context, id string, opts volumetypes.UpdateOptsBuilder) (*osclients.VolumeTypeExt, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateVolumeType", ctx, id, opts)
-	ret0, _ := ret[0].(*volumetypes.VolumeType)
+	ret0, _ := ret[0].(*osclients.VolumeTypeExt)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

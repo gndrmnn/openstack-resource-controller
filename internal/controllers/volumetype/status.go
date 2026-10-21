@@ -51,7 +51,8 @@ func (volumetypeStatusWriter) ResourceAvailableStatus(orcObject *orcv1alpha1.Vol
 func (volumetypeStatusWriter) ApplyResourceStatus(log logr.Logger, osResource *osResourceT, statusApply *statusApplyT) {
 	resourceStatus := orcapplyconfigv1alpha1.VolumeTypeResourceStatus().
 		WithName(osResource.Name).
-		WithIsPublic(osResource.IsPublic)
+		WithIsPublic(osResource.IsPublic).
+		WithProjectIDs(osResource.ProjectIDs...)
 
 	for k, v := range osResource.ExtraSpecs {
 		resourceStatus.WithExtraSpecs(orcapplyconfigv1alpha1.VolumeTypeExtraSpecStatus().
