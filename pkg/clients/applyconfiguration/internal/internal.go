@@ -5267,6 +5267,12 @@ var schemaYAML = typed.YAMLObject(`types:
     - name: name
       type:
         scalar: string
+    - name: projectRefs
+      type:
+        list:
+          elementType:
+            scalar: string
+          elementRelationship: associative
 - name: com.github.k-orc.openstack-resource-controller.v3.api.v1alpha1.VolumeTypeResourceStatus
   map:
     fields:
@@ -5285,6 +5291,12 @@ var schemaYAML = typed.YAMLObject(`types:
     - name: name
       type:
         scalar: string
+    - name: projectIDs
+      type:
+        list:
+          elementType:
+            scalar: string
+          elementRelationship: associative
 - name: com.github.k-orc.openstack-resource-controller.v3.api.v1alpha1.VolumeTypeSpec
   map:
     fields:
