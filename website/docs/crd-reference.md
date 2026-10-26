@@ -24,6 +24,7 @@ Package v1alpha1 contains API Schema definitions for the openstack v1alpha1 API 
 - [Network](#network)
 - [Port](#port)
 - [Project](#project)
+- [RecordSet](#recordset)
 - [Region](#region)
 - [RegisteredLimit](#registeredlimit)
 - [Role](#role)
@@ -528,6 +529,7 @@ _Appears in:_
 - [NetworkSpec](#networkspec)
 - [PortSpec](#portspec)
 - [ProjectSpec](#projectspec)
+- [RecordSetSpec](#recordsetspec)
 - [RegionSpec](#regionspec)
 - [RegisteredLimitSpec](#registeredlimitspec)
 - [RoleAssignmentSpec](#roleassignmentspec)
@@ -669,6 +671,7 @@ _Appears in:_
 | `serial` _integer_ | serial is the zone's current SOA serial number. |  | Optional: \{\} <br /> |
 | `transferredAt` _[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#time-v1-meta)_ | transferredAt is the last time this SECONDARY zone's records were refreshed from its<br />masters. Unset for PRIMARY zones. |  | Optional: \{\} <br /> |
 | `projectID` _string_ | projectID is the ID of the OpenStack project that owns this zone. Not to be confused with<br />a DNSZoneShare's targetProjectID, which grants a *different* project access without<br />changing ownership. |  | MaxLength: 1024 <br />Optional: \{\} <br /> |
+| `status` _string_ | status is the status of the zone in Designate, e.g. ACTIVE, PENDING or ERROR. |  | MaxLength: 1024 <br />Optional: \{\} <br /> |
 
 
 #### DNSZoneSpec
@@ -747,6 +750,8 @@ _Validation:_
 _Appears in:_
 - [DNSZoneFilter](#dnszonefilter)
 - [DNSZoneResourceSpec](#dnszoneresourcespec)
+- [RecordSetFilter](#recordsetfilter)
+- [RecordSetResourceSpec](#recordsetresourcespec)
 
 
 
@@ -2371,6 +2376,24 @@ _Appears in:_
 
 
 
+#### KeystoneSystem
+
+_Underlying type:_ _string_
+
+
+
+_Validation:_
+- Enum: [all]
+
+_Appears in:_
+- [RoleAssignmentFilter](#roleassignmentfilter)
+- [RoleAssignmentResourceSpec](#roleassignmentresourcespec)
+
+| Field | Description |
+| --- | --- |
+| `all` |  |
+
+
 #### KeystoneTag
 
 _Underlying type:_ _string_
@@ -2421,6 +2444,8 @@ _Appears in:_
 - [PortResourceSpec](#portresourcespec)
 - [ProjectFilter](#projectfilter)
 - [ProjectResourceSpec](#projectresourcespec)
+- [RecordSetFilter](#recordsetfilter)
+- [RecordSetResourceSpec](#recordsetresourcespec)
 - [RegisteredLimitFilter](#registeredlimitfilter)
 - [RegisteredLimitResourceSpec](#registeredlimitresourcespec)
 - [RoleAssignmentFilter](#roleassignmentfilter)
@@ -2449,6 +2474,7 @@ _Appears in:_
 - [UserFilter](#userfilter)
 - [UserResourceSpec](#userresourcespec)
 - [VolumeResourceSpec](#volumeresourcespec)
+- [VolumeTypeResourceSpec](#volumetyperesourcespec)
 
 
 
@@ -2650,6 +2676,7 @@ _Appears in:_
 - [NetworkSpec](#networkspec)
 - [PortSpec](#portspec)
 - [ProjectSpec](#projectspec)
+- [RecordSetSpec](#recordsetspec)
 - [RegionSpec](#regionspec)
 - [RegisteredLimitSpec](#registeredlimitspec)
 - [RoleAssignmentSpec](#roleassignmentspec)
@@ -2696,6 +2723,7 @@ _Appears in:_
 - [NetworkSpec](#networkspec)
 - [PortSpec](#portspec)
 - [ProjectSpec](#projectspec)
+- [RecordSetSpec](#recordsetspec)
 - [RegionSpec](#regionspec)
 - [RegisteredLimitSpec](#registeredlimitspec)
 - [RoleAssignmentSpec](#roleassignmentspec)
@@ -3537,6 +3565,165 @@ _Appears in:_
 | `segmentationID` _integer_ | segmentationID is the ID of the isolated segment on the<br />physical network. The network_type attribute defines the<br />segmentation model. For example, if the network_type value is vlan,<br />this ID is a vlan identifier. If the network_type value is gre, this<br />ID is a gre key. |  | Minimum: 0 <br />Optional: \{\} <br /> |
 
 
+#### RecordSet
+
+
+
+RecordSet is the Schema for an ORC resource.
+
+
+
+
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `apiVersion` _string_ | `openstack.k-orc.cloud/v1alpha1` | | |
+| `kind` _string_ | `RecordSet` | | |
+| `metadata` _[ObjectMeta](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#objectmeta-v1-meta)_ | Refer to Kubernetes API documentation for fields of `metadata`. |  | Optional: \{\} <br /> |
+| `spec` _[RecordSetSpec](#recordsetspec)_ | spec specifies the desired state of the resource. |  | Required: \{\} <br /> |
+| `status` _[RecordSetStatus](#recordsetstatus)_ | status defines the observed state of the resource. |  | Optional: \{\} <br /> |
+
+
+#### RecordSetFilter
+
+
+
+RecordSetFilter defines an existing resource by its properties
+
+_Validation:_
+- MinProperties: 1
+
+_Appears in:_
+- [RecordSetImport](#recordsetimport)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `zoneRef` _[KubernetesNameRef](#kubernetesnameref)_ | zoneRef is a reference to the ORC DNSZone to look for the recordset in. If not specified,<br />all zones in the project are searched. |  | MaxLength: 253 <br />MinLength: 1 <br />Optional: \{\} <br /> |
+| `name` _[DesignateFQDN](#designatefqdn)_ | name of the existing resource |  | MaxLength: 255 <br />MinLength: 1 <br />Optional: \{\} <br /> |
+| `description` _string_ | description of the existing resource |  | MaxLength: 255 <br />MinLength: 1 <br />Optional: \{\} <br /> |
+| `type` _[RecordSetType](#recordsettype)_ | type of the existing resource |  | Enum: [A AAAA CNAME MX NS PTR SPF SRV SSHFP TXT CAA] <br />Optional: \{\} <br /> |
+| `ttl` _integer_ | ttl of the existing resource |  | Maximum: 2.147483647e+09 <br />Minimum: 1 <br />Optional: \{\} <br /> |
+
+
+#### RecordSetImport
+
+
+
+RecordSetImport specifies an existing resource which will be imported instead of
+creating a new one
+
+_Validation:_
+- MaxProperties: 1
+- MinProperties: 1
+
+_Appears in:_
+- [RecordSetSpec](#recordsetspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `id` _string_ | id contains the unique identifier of an existing OpenStack resource. Note<br />that when specifying an import by ID, the resource MUST already exist.<br />The ORC object will enter an error state if the resource does not exist. |  | Format: uuid <br />MaxLength: 36 <br />Optional: \{\} <br /> |
+| `filter` _[RecordSetFilter](#recordsetfilter)_ | filter contains a resource query which is expected to return a single<br />result. The controller will continue to retry if filter returns no<br />results. If filter returns multiple results the controller will set an<br />error state and will not continue to retry. |  | MinProperties: 1 <br />Optional: \{\} <br /> |
+
+
+#### RecordSetResourceSpec
+
+
+
+RecordSetResourceSpec contains the desired state of the resource.
+
+
+
+_Appears in:_
+- [RecordSetSpec](#recordsetspec)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` _[DesignateFQDN](#designatefqdn)_ | name is the name of the recordset, e.g. "www.example.com.". Must end with a period. |  | MaxLength: 255 <br />MinLength: 1 <br />Required: \{\} <br /> |
+| `description` _string_ | description is a human-readable description for the resource. |  | MaxLength: 255 <br />MinLength: 1 <br />Optional: \{\} <br /> |
+| `zoneRef` _[KubernetesNameRef](#kubernetesnameref)_ | zoneRef is a reference to the ORC DNSZone this recordset belongs to. |  | MaxLength: 253 <br />MinLength: 1 <br />Required: \{\} <br /> |
+| `type` _[RecordSetType](#recordsettype)_ | type is the RRTYPE of the recordset, e.g. A, CNAME, TXT. |  | Enum: [A AAAA CNAME MX NS PTR SPF SRV SSHFP TXT CAA] <br />Required: \{\} <br /> |
+| `records` _string array_ | records are the record data for this recordset, in Designate's format for the given type<br />(e.g. an IP address for A/AAAA, a hostname for CNAME/MX/NS, text for TXT). |  | MaxItems: 64 <br />MinItems: 1 <br />items:MaxLength: 1024 <br />Required: \{\} <br /> |
+| `ttl` _integer_ | ttl is the Time To Live for the recordset, in seconds. If not specified, the zone's default<br />TTL applies. |  | Maximum: 2.147483647e+09 <br />Minimum: 1 <br />Optional: \{\} <br /> |
+
+
+#### RecordSetResourceStatus
+
+
+
+RecordSetResourceStatus represents the observed state of the resource.
+
+
+
+_Appears in:_
+- [RecordSetStatus](#recordsetstatus)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `name` _string_ | name is the name of the recordset, e.g. "www.example.com.". |  | MaxLength: 1024 <br />Optional: \{\} <br /> |
+| `description` _string_ | description is a human-readable description for the resource. |  | MaxLength: 1024 <br />Optional: \{\} <br /> |
+| `zoneID` _string_ | zoneID is the ID of the DNSZone this recordset belongs to. |  | MaxLength: 1024 <br />Optional: \{\} <br /> |
+| `type` _string_ | type is the RRTYPE of the recordset. |  | MaxLength: 255 <br />Optional: \{\} <br /> |
+| `records` _string array_ | records are the record data for this recordset. |  | MaxItems: 64 <br />items:MaxLength: 1024 <br />Optional: \{\} <br /> |
+| `ttl` _integer_ | ttl is the Time To Live for the recordset, in seconds. |  | Optional: \{\} <br /> |
+| `projectID` _string_ | projectID is the ID of the project that owns this recordset (inherited from its zone). |  | MaxLength: 1024 <br />Optional: \{\} <br /> |
+| `status` _string_ | status is the status of the recordset in Designate, e.g. ACTIVE, PENDING or ERROR. |  | MaxLength: 1024 <br />Optional: \{\} <br /> |
+
+
+#### RecordSetSpec
+
+
+
+RecordSetSpec defines the desired state of an ORC object.
+
+
+
+_Appears in:_
+- [RecordSet](#recordset)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `import` _[RecordSetImport](#recordsetimport)_ | import refers to an existing OpenStack resource which will be imported instead of<br />creating a new one. |  | MaxProperties: 1 <br />MinProperties: 1 <br />Optional: \{\} <br /> |
+| `resource` _[RecordSetResourceSpec](#recordsetresourcespec)_ | resource specifies the desired state of the resource.<br />resource may not be specified if the management policy is `unmanaged`.<br />resource must be specified if the management policy is `managed`. |  | Optional: \{\} <br /> |
+| `managementPolicy` _[ManagementPolicy](#managementpolicy)_ | managementPolicy defines how ORC will treat the object. Valid values are<br />`managed`: ORC will create, update, and delete the resource; `unmanaged`:<br />ORC will import an existing resource, and will not apply updates to it or<br />delete it. | managed | Enum: [managed unmanaged] <br />Optional: \{\} <br /> |
+| `managedOptions` _[ManagedOptions](#managedoptions)_ | managedOptions specifies options which may be applied to managed objects. |  | Optional: \{\} <br /> |
+| `resyncPeriod` _[Duration](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#duration-v1-meta)_ | resyncPeriod defines how frequently the controller will re-reconcile<br />this resource even when no changes have been detected. This overrides<br />the global default resync period. The value must be a valid Go duration<br />string, e.g. "10m", "1h". Set to "0s" to disable periodic resync for<br />this resource. Very low values may cause excessive OpenStack API load. |  | Optional: \{\} <br /> |
+| `cloudCredentialsRef` _[CloudCredentialsReference](#cloudcredentialsreference)_ | cloudCredentialsRef points to a secret containing OpenStack credentials |  | Required: \{\} <br /> |
+
+
+#### RecordSetStatus
+
+
+
+RecordSetStatus defines the observed state of an ORC resource.
+
+
+
+_Appears in:_
+- [RecordSet](#recordset)
+
+| Field | Description | Default | Validation |
+| --- | --- | --- | --- |
+| `conditions` _[Condition](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#condition-v1-meta) array_ | conditions represents the observed status of the object.<br />Known .status.conditions.type are: "Available", "Progressing"<br />Available represents the availability of the OpenStack resource. If it is<br />true then the resource is ready for use.<br />Progressing indicates whether the controller is still attempting to<br />reconcile the current state of the OpenStack resource to the desired<br />state. Progressing will be False either because the desired state has<br />been achieved, or because some terminal error prevents it from ever being<br />achieved and the controller is no longer attempting to reconcile. If<br />Progressing is True, an observer waiting on the resource should continue<br />to wait. |  | MaxItems: 32 <br />Optional: \{\} <br /> |
+| `id` _string_ | id is the unique identifier of the OpenStack resource. |  | MaxLength: 1024 <br />Optional: \{\} <br /> |
+| `resource` _[RecordSetResourceStatus](#recordsetresourcestatus)_ | resource contains the observed state of the OpenStack resource. |  | Optional: \{\} <br /> |
+| `lastSyncTime` _[Time](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.29/#time-v1-meta)_ | lastSyncTime is the timestamp of the last successful reconciliation<br />that fetched state from OpenStack. It is updated each time the<br />controller successfully reads the resource state from the OpenStack<br />API. |  | Optional: \{\} <br /> |
+
+
+#### RecordSetType
+
+_Underlying type:_ _string_
+
+RecordSetType is the RRTYPE of a DNS recordset.
+
+_Validation:_
+- Enum: [A AAAA CNAME MX NS PTR SPF SRV SSHFP TXT CAA]
+
+_Appears in:_
+- [RecordSetFilter](#recordsetfilter)
+- [RecordSetResourceSpec](#recordsetresourcespec)
+
+
+
 #### Region
 
 
@@ -3864,6 +4051,7 @@ _Appears in:_
 | `groupRef` _[KubernetesNameRef](#kubernetesnameref)_ | groupRef filters by the referenced Group. |  | MaxLength: 253 <br />MinLength: 1 <br />Optional: \{\} <br /> |
 | `projectRef` _[KubernetesNameRef](#kubernetesnameref)_ | projectRef filters by the referenced Project scope. |  | MaxLength: 253 <br />MinLength: 1 <br />Optional: \{\} <br /> |
 | `domainRef` _[KubernetesNameRef](#kubernetesnameref)_ | domainRef filters by the referenced Domain scope. |  | MaxLength: 253 <br />MinLength: 1 <br />Optional: \{\} <br /> |
+| `system` _[KeystoneSystem](#keystonesystem)_ | system filters by the referenced System scope. |  | Enum: [all] <br />Optional: \{\} <br /> |
 
 
 #### RoleAssignmentImport
@@ -3903,8 +4091,9 @@ _Appears in:_
 | `roleRef` _[KubernetesNameRef](#kubernetesnameref)_ | roleRef references the Role being assigned. |  | MaxLength: 253 <br />MinLength: 1 <br />Required: \{\} <br /> |
 | `userRef` _[KubernetesNameRef](#kubernetesnameref)_ | userRef references the User receiving the role assignment.<br />Exactly one of userRef or groupRef must be specified. |  | MaxLength: 253 <br />MinLength: 1 <br />Optional: \{\} <br /> |
 | `groupRef` _[KubernetesNameRef](#kubernetesnameref)_ | groupRef references the Group receiving the role assignment.<br />Exactly one of userRef or groupRef must be specified. |  | MaxLength: 253 <br />MinLength: 1 <br />Optional: \{\} <br /> |
-| `projectRef` _[KubernetesNameRef](#kubernetesnameref)_ | projectRef references the Project scope for the assignment.<br />Exactly one of projectRef or domainRef must be specified. |  | MaxLength: 253 <br />MinLength: 1 <br />Optional: \{\} <br /> |
-| `domainRef` _[KubernetesNameRef](#kubernetesnameref)_ | domainRef references the Domain scope for the assignment.<br />Exactly one of projectRef or domainRef must be specified. |  | MaxLength: 253 <br />MinLength: 1 <br />Optional: \{\} <br /> |
+| `projectRef` _[KubernetesNameRef](#kubernetesnameref)_ | projectRef references the Project scope for the assignment.<br />Exactly one of projectRef, domainRef, or system must be specified. |  | MaxLength: 253 <br />MinLength: 1 <br />Optional: \{\} <br /> |
+| `domainRef` _[KubernetesNameRef](#kubernetesnameref)_ | domainRef references the Domain scope for the assignment.<br />Exactly one of projectRef, domainRef, or system must be specified. |  | MaxLength: 253 <br />MinLength: 1 <br />Optional: \{\} <br /> |
+| `system` _[KeystoneSystem](#keystonesystem)_ | system references the System scope for this assignment.<br />Due to an upstream Keystone caching bug in versions prior to hibiscus,<br />system scoped role assignments might only become available after a few minutes.<br />Exactly one of projectRef, domainRef, or system must be specified. |  | Enum: [all] <br />Optional: \{\} <br /> |
 
 
 #### RoleAssignmentResourceStatus
@@ -3913,7 +4102,7 @@ _Appears in:_
 
 RoleAssignmentResourceStatus represents the observed state of the role assignment.
 Note: Role assignments do not have a unique ID in OpenStack - they are identified
-by the combination of role, actor (user/group), and scope (project/domain).
+by the combination of role, actor (user/group), and scope (project/domain/system).
 
 
 
@@ -3927,6 +4116,7 @@ _Appears in:_
 | `groupID` _string_ | groupID is the OpenStack ID of the group (if actorType is Group). |  | MaxLength: 1024 <br />Optional: \{\} <br /> |
 | `projectID` _string_ | projectID is the OpenStack ID of the project scope (if scopeType is Project). |  | MaxLength: 1024 <br />Optional: \{\} <br /> |
 | `domainID` _string_ | domainID is the OpenStack ID of the domain scope (if scopeType is Domain). |  | MaxLength: 1024 <br />Optional: \{\} <br /> |
+| `system` _string_ | system identifies the system scope which is currently only "all" (if scopeType is System). |  | MaxLength: 1024 <br />Optional: \{\} <br /> |
 
 
 #### RoleAssignmentSpec
@@ -6385,6 +6575,7 @@ _Appears in:_
 | `description` _string_ | description is a human-readable description for the resource. |  | MaxLength: 255 <br />MinLength: 1 <br />Optional: \{\} <br /> |
 | `extraSpecs` _[VolumeTypeExtraSpec](#volumetypeextraspec) array_ | extraSpecs is a map of key-value pairs that define extra specifications for the volume type. |  | MaxItems: 64 <br />Optional: \{\} <br /> |
 | `isPublic` _boolean_ | isPublic indicates whether the volume type is public. |  | Optional: \{\} <br /> |
+| `projectRefs` _[KubernetesNameRef](#kubernetesnameref) array_ | projectRefs contains ORC Projects which have access to this volume type. |  | MaxItems: 4096 <br />MaxLength: 253 <br />MinLength: 1 <br />Optional: \{\} <br /> |
 
 
 #### VolumeTypeResourceStatus
@@ -6404,6 +6595,7 @@ _Appears in:_
 | `description` _string_ | description is a human-readable description for the resource. |  | MaxLength: 1024 <br />Optional: \{\} <br /> |
 | `extraSpecs` _[VolumeTypeExtraSpecStatus](#volumetypeextraspecstatus) array_ | extraSpecs is a map of key-value pairs that define extra specifications for the volume type. |  | MaxItems: 64 <br />Optional: \{\} <br /> |
 | `isPublic` _boolean_ | isPublic indicates whether the VolumeType is public. |  | Optional: \{\} <br /> |
+| `projectIDs` _string array_ | projectIDs lists the IDs of the Projects which have access to this volume type. |  | MaxItems: 4096 <br />items:MaxLength: 4096 <br />Optional: \{\} <br /> |
 
 
 #### VolumeTypeSpec

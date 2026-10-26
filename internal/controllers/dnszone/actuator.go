@@ -19,6 +19,7 @@ package dnszone
 import (
 	"context"
 	"iter"
+	"time"
 
 	"github.com/gophercloud/gophercloud/v2/openstack/dns/v2/zones"
 	corev1 "k8s.io/api/core/v1"
@@ -32,6 +33,7 @@ import (
 	"github.com/k-orc/openstack-resource-controller/v3/internal/logging"
 	"github.com/k-orc/openstack-resource-controller/v3/internal/osclients"
 	orcerrors "github.com/k-orc/openstack-resource-controller/v3/internal/util/errors"
+	orcslices "github.com/k-orc/openstack-resource-controller/v3/internal/util/slices"
 )
 
 // OpenStack resource types
@@ -43,6 +45,9 @@ type (
 	resourceReconciler     = interfaces.ResourceReconciler[orcObjectPT, osResourceT]
 	helperFactory          = interfaces.ResourceHelperFactory[orcObjectPT, orcObjectT, resourceSpecT, filterT, osResourceT]
 )
+
+// The frequency to poll when waiting for the resource to become available
+const dnszoneAvailablePollingPeriod = 15 * time.Second
 
 type dnszoneActuator struct {
 	osClient  osclients.DNSZoneClient
@@ -158,7 +163,7 @@ func (actuator dnszoneActuator) updateResource(ctx context.Context, obj orcObjec
 	for _, master := range resource.Masters {
 		desiredMasters = append(desiredMasters, string(master))
 	}
-	if !stringSlicesEqualAsSets(osResource.Masters, desiredMasters) {
+	if !orcslices.EqualAsSets(osResource.Masters, desiredMasters) {
 		updateOpts.Masters = desiredMasters
 		needsUpdate = true
 	}
@@ -177,25 +182,6 @@ func (actuator dnszoneActuator) updateResource(ctx context.Context, obj orcObjec
 	}
 
 	return progress.NeedsRefresh()
-}
-
-func stringSlicesEqualAsSets(a, b []string) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	seen := make(map[string]int, len(a))
-	for _, v := range a {
-		seen[v]++
-	}
-	for _, v := range b {
-		seen[v]--
-	}
-	for _, count := range seen {
-		if count != 0 {
-			return false
-		}
-	}
-	return true
 }
 
 func (actuator dnszoneActuator) GetResourceReconcilers(ctx context.Context, orcObject orcObjectPT, osResource *osResourceT, controller interfaces.ResourceController) ([]resourceReconciler, progress.ReconcileStatus) {
