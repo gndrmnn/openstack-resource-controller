@@ -28,21 +28,21 @@ type mockFlavorClient struct {
 
 var _ flavorClient = mockFlavorClient{}
 
-func (l mockFlavorClient) ListFlavors(_ context.Context, _ flavors.ListOptsBuilder) iter.Seq2[*flavors.Flavor, error] {
-	return func(yield func(*flavors.Flavor, error) bool) {
+func (l mockFlavorClient) ListFlavors(_ context.Context, _ flavors.ListOptsBuilder) iter.Seq2[*osclients.FlavorExt, error] {
+	return func(yield func(*osclients.FlavorExt, error) bool) {
 		for i := range l.flavors {
-			if !yield(&l.flavors[i], nil) {
+			if !yield(&osResourceT{Flavor: l.flavors[i]}, nil) {
 				return
 			}
 		}
 	}
 }
 
-func (l mockFlavorClient) GetFlavor(_ context.Context, _ string) (*flavors.Flavor, error) {
+func (l mockFlavorClient) GetFlavor(_ context.Context, _ string) (*osclients.FlavorExt, error) {
 	return nil, errNotImplemented
 }
 
-func (l mockFlavorClient) CreateFlavor(_ context.Context, _ flavors.CreateOptsBuilder) (*flavors.Flavor, error) {
+func (l mockFlavorClient) CreateFlavor(_ context.Context, _ flavors.CreateOptsBuilder) (*osclients.FlavorExt, error) {
 	return nil, errNotImplemented
 }
 
@@ -59,7 +59,7 @@ func (l mockFlavorClient) DeleteFlavorExtraSpec(_ context.Context, _, _ string) 
 }
 
 type flavorResult struct {
-	flavor *flavors.Flavor
+	flavor *osResourceT
 	err    error
 }
 
@@ -542,12 +542,12 @@ func TestReconcileExtraSpecs(t *testing.T) {
 				},
 			}
 
-			osResource := &flavors.Flavor{
+			osResource := flavors.Flavor{
 				ID:         "test-flavor-id",
 				ExtraSpecs: tt.currSpecs,
 			}
 
-			status := actuator.reconcileExtraSpecs(ctx, obj, osResource)
+			status := actuator.reconcileExtraSpecs(ctx, obj, &osclients.FlavorExt{Flavor: osResource})
 
 			if tt.expectError != nil {
 				if status == nil || status.GetError() == nil {
