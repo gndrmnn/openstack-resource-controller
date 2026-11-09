@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"net/http"
 	"slices"
+	"strings"
 	"sync/atomic"
 	"testing"
 
@@ -87,8 +88,12 @@ func TestListFlavors(t *testing.T) {
 			client := computeClient{client: newTestServiceClient(t, func(w http.ResponseWriter, r *http.Request) {
 				requests.Add(1)
 				if r.URL.Path != "/flavors/detail" {
-					t.Errorf("unexpected request: %s", r.URL)
-					w.WriteHeader(http.StatusNotFound)
+					if !strings.HasSuffix(r.URL.Path, "os-flavor-access") {
+						t.Errorf("unexpected request: %s", r.URL)
+						w.WriteHeader(http.StatusNotFound)
+					} else {
+						requests.Add(-1)
+					}
 					return
 				}
 				w.Header().Set("Content-Type", "application/json")
